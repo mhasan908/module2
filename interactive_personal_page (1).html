@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hasan Interactive Page</title>
+<style>
+  body { font-family: Arial; background:#f4f6f8; text-align:center; }
+  .card { background:white; padding:20px; margin:20px auto; width:350px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,.15);} 
+  button { padding:10px 15px; margin-top:10px; cursor:pointer; }
+  .highlight { color:green; font-weight:bold; }
+</style>
+</head>
+<body>
+
+<h1 id="title">Welcome to Hasan's Interactive Web Page</h1>
+
+<div class="card">
+  <h2>Skill Filter</h2>
+  <input id="skillInput" placeholder="Type level (beginner/intermediate/advanced)">
+  <button id="filterBtn">Filter Skills</button>
+  <p id="skillResult"></p>
+</div>
+
+<div class="card">
+  <h2>Score Checker</h2>
+  <input id="scoreInput" type="number" placeholder="Enter exam score">
+  <button id="scoreBtn">Check Grade</button>
+  <p id="gradeResult"></p>
+</div>
+
+<div class="card">
+  <h2>Daily Quote (Async)</h2>
+  <button id="quoteBtn">Load Quote</button>
+  <p id="quote"></p>
+</div>
+
+<script>
+// ================= VARIABLES & DATA TYPES =================
+const name = "Hasan";        // string
+let age = 24;                // number
+let isStudent = true;        // boolean
+let score = 85;              // number
+let hobbies = ["Coding","Gym","Gaming","Travel","Reading"]; // array
+
+// Operators (arithmetic, comparison, logical)
+let nextYearAge = age + 1;        // arithmetic
+let passed = score >= 60;         // comparison
+let activeStudent = passed && isStudent; // logical
+
+console.log(`${name} next year age: ${nextYearAge}, Passed: ${passed}, Active: ${activeStudent}`);
+
+// ================= OBJECT + DESTRUCTURING =================
+const profile = {
+  username: "mhasan",
+  university: "NJIT",
+  major: "Information Technology"
+};
+
+const {username, university} = profile; // destructuring
+console.log(`User ${username} studies at ${university}`);
+
+// ================= FUNCTIONS =================
+// Regular function
+function calculateGrade(score){
+  if(score >= 90) return "A";
+  else if(score >= 80) return "B";
+  else if(score >= 70) return "C";
+  else if(score >= 60) return "D";
+  else return "F";
+}
+
+// Arrow function
+const formatList = arr => arr.map(item => `<span class='highlight'>${item}</span>`).join(", ");
+
+// ================= ARRAY METHODS =================
+const skills = [
+  {name:"Java", level:"advanced"},
+  {name:"JavaScript", level:"intermediate"},
+  {name:"HTML", level:"advanced"},
+  {name:"CSS", level:"intermediate"},
+  {name:"Python", level:"beginner"}
+];
+
+// ================= EVENT LISTENERS =================
+document.getElementById("filterBtn").addEventListener("click", () => {
+  const level = document.getElementById("skillInput").value.toLowerCase();
+  const filtered = skills.filter(skill => skill.level === level).map(s => s.name);
+  document.getElementById("skillResult").innerHTML = filtered.length
+    ? `Skills: ${formatList(filtered)}`
+    : "No matching skills";
+});
+
+document.getElementById("scoreBtn").addEventListener("click", () => {
+  const value = Number(document.getElementById("scoreInput").value);
+  const grade = calculateGrade(value);
+  document.getElementById("gradeResult").textContent = `Your grade is ${grade}`;
+});
+
+// ================= LOOP =================
+for(const hobby of hobbies){
+  console.log(`Hobby: ${hobby}`);
+}
+
+// ================= SPREAD / REST =================
+const moreHobbies = [...hobbies, "Music","Movies"];
+console.log(moreHobbies);
+
+function totalScores(...nums){
+  return nums.reduce((sum,n)=>sum+n,0);
+}
+console.log("Total:", totalScores(10,20,30));
+
+// ================= ASYNC (setTimeout) =================
+document.getElementById("quoteBtn").addEventListener("click", () => {
+  document.getElementById("quote").textContent = "Loading...";
+  setTimeout(()=>{
+    const quotes = [
+      "Success is built daily.",
+      "Practice makes progress.",
+      "Consistency beats motivation.",
+      "Code. Debug. Learn. Repeat."
+    ];
+    const random = quotes[Math.floor(Math.random()*quotes.length)];
+    document.getElementById("quote").textContent = random;
+  },1500);
+});
+
+</script>
+</body>
+</html>
